@@ -4,10 +4,11 @@
 
 #include <cmath>
 #include "calculate.h"
+#include "opencv2/opencv.hpp"
 
 using namespace cv;
 namespace ranging {
-    point<double> Calculate::calculate(point<int> &laser_marker, eclipse<int> eclipse) {
+    point<double> Calculate::calculate(Point &laser_marker, eclipse<float > eclipse) {
 
         ratio_ = (eclipse.height / realEclipseHeight_ + eclipse.width / realEclipseWidth_) / 2.0;
         if (ratio_ == 0)
@@ -22,8 +23,8 @@ namespace ranging {
 
     }
 
-    eclipse<int> Calculate::detect_eclipse(cv::Mat srcImg) {
-        eclipse<int> eclipse;
+    eclipse<float> Calculate::detect_eclipse(cv::Mat srcImg) {
+        eclipse<float> eclipse;
 //        Mat srcImg = imread("/home/minzhao/Document/laser_scan_classfication/dataset/15.jpg");
 //        cout << srcImg.rows << " " << srcImg.cols << endl;
         vector<vector<Point>> contours;    //储存轮廓
@@ -61,20 +62,44 @@ namespace ranging {
         vector<cv::Point> contourMax = contours[areaMaxIndex];
         vector<vector<cv::Point>> contours_poly(1);
         approxPolyDP(cv::Mat(contourMax), contours_poly[0], 3, true);
-        cv::Rect boundRect = cv::boundingRect(cv::Mat(contours_poly[0]));
+        cv::RotatedRect boundRect = cv::minAreaRect(cv::Mat(contours_poly[0]));  //获得斜矩形
         cv::Mat drawing = cv::Mat::zeros(srcImg.size(), CV_8UC3);
         drawContours(drawing, contours_poly, 0, cv::Scalar(0, 0, 255), 1, 8, vector<cv::Vec4i>(), 0, cv::Point());
-        rectangle(drawing, boundRect.tl(), boundRect.br(), cv::Scalar(0, 0, 255), 1, 8, 0);
+//        rectangle(drawing, boundRect.)
+//        rectangle(drawing, boundRect.tl(), boundRect.br(), cv::Scalar(0, 0, 255), 1, 8, 0);
 
-        eclipse.x = boundRect.x; //椭圆左上的坐标x
-        eclipse.y = boundRect.y; //椭圆左上的坐标y
-        eclipse.height = boundRect.height;
-        eclipse.width = boundRect.width;
+        Point2f vertices[4];
+        boundRect.points(vertices);//获取矩形的四个点
+
+
+        eclipse.x = boundRect.center.x; //椭圆左上的坐标x
+        eclipse.y = boundRect.center.y; //椭圆左上的坐标y
+        eclipse.rotate = boundRect.angle;
+        eclipse.height = boundRect.size.height;
+        eclipse.width = boundRect.size.width;
+
+
+        eclipse.points[0] = vertices[0];
+        eclipse.points[1] = vertices[1];
+        eclipse.points[2] = vertices[2];
+        eclipse.points[3] = vertices[3];
+
+        if(calDist(vertices[0].x,vertices[1].x,vertices[0].y,vertices[1].y) < calDist(vertices[2].x,vertices[1].x,vertices[2].y,vertices[1].y)) {
+            eclipse.rotate_slope = atan((vertices[0].y - vertices[1].y) / (vertices[0].x - vertices[1].x));
+        } else {
+            eclipse.rotate_slope = atan((vertices[2].y - vertices[1].y) / (vertices[2].x - vertices[1].x));
+        }
+
 
 //        cout << boundRect.x << " " << boundRect.y << " " << boundRect.width << " " << boundRect.height << endl;
 //        imshow("pointImg", srcImg);
 //        imshow("contour", drawing);
 //        waitKey();
         return eclipse;
+    }
+
+
+    float Calculate::calDist(float x0, float x1, float y0, float y1) {
+        return fabs((x0-x1)*(x0-x1) + (y0-y1)*(y0-y1));
     }
 }

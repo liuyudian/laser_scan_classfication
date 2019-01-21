@@ -17,9 +17,11 @@ namespace ranging {
         Calculate(double EclipseWidth, double EclipseHeight, double standard_length) : realEclipseWidth_(EclipseWidth), realEclipseHeight_(EclipseHeight),
                                                                                        realStandard_(standard_length), ratio_(0) {}
 
-        eclipse<int> detect_eclipse(cv::Mat);
+        eclipse<float > detect_eclipse(cv::Mat);
 
-        point<double> calculate(point<int> &laser_marker, eclipse<int> eclipse);
+        point<double> calculate(Point &laser_marker, eclipse<float > eclipse);
+
+        float calDist(float ,float ,float , float);
 
         double ratio_; //真实尺度与像素的比例
         double realEclipseWidth_;

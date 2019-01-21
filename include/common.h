@@ -4,6 +4,7 @@
 
 #ifndef LASER_SCAN_CLASSFICATION_COMMON_H
 #define LASER_SCAN_CLASSFICATION_COMMON_H
+#include "opencv2/opencv.hpp"
 namespace ranging {
 
 #define ECLIPSEWIDTH 51.1
@@ -41,6 +42,9 @@ namespace ranging {
         }
 
         T width, height;
+        T rotate;
+        T rotate_slope;
+        cv::Point2f points[4];
     };
 
 }

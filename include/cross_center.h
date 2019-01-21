@@ -8,12 +8,17 @@
 #include <iostream>
 #include <vector>
 #include "opencv2/opencv.hpp"
-#include "common.h"
-
 using namespace std;
 using namespace cv;
 
 namespace ranging{
+    struct Cross_Property
+    {
+        Vec4i vertical;
+        Vec4i horizontal;
+        Point center;
+    };
+
     class Cross_center{
     public:
         Cross_center(int, int);
@@ -21,9 +26,12 @@ namespace ranging{
         void test();
         Mat Crop_img(Mat& img);
         vector<int> Mat_sum_dim(Mat& );
-        point<int> Get_center(Mat& );
+        vector<int > Get_center(Mat& );
         vector<uint8_t > Temp_iter();
         vector<uint16_t > Out_dim(int, int);
+        Cross_Property Crossline_Reg(Mat& );
+//        CrossLines Cal_cross_lines(vector<Vec4i> );
+        Point Cal_intersection(Vec4i,Vec4i);
     private:
         //Mat img;
         uint16_t W;
