@@ -8,10 +8,11 @@
 #include <iostream>
 #include <vector>
 #include "opencv2/opencv.hpp"
+
 using namespace std;
 using namespace cv;
 
-namespace ranging{
+namespace ranging {
     struct Cross_Property
     {
         Vec4i vertical;
@@ -19,30 +20,27 @@ namespace ranging{
         Point center;
     };
 
-    class Cross_center{
+    class Cross_center {
     public:
         Cross_center(int, int);
         ~Cross_center();
-        void test();
         Mat Crop_img(Mat& img);
-        vector<int> Mat_sum_dim(Mat& );
-        vector<int > Get_center(Mat& );
-        vector<uint8_t > Temp_iter();
-        vector<uint16_t > Out_dim(int, int);
-        Cross_Property Crossline_Reg(Mat& );
-//        CrossLines Cal_cross_lines(vector<Vec4i> );
-        Point Cal_intersection(Vec4i,Vec4i);
+        vector<int> Mat_sum_dim(Mat&);
+        vector<int > Get_center(Mat&);
+        vector<int > Temp_iter();
+        vector<int > Out_dim(int, int);
+        Cross_Property Crossline_Reg(Mat&);
+        Point Cal_intersection(Vec4i, Vec4i);
     private:
-        //Mat img;
-        uint16_t W;
-        uint16_t H;
-        vector<uint16_t> WCrop;
-        vector<uint16_t> HCrop;
-        uint8_t NTemp;
-        uint8_t WCross;
-        uint8_t stride;
-        //vector<vector<uint16_t >> cross_simi;
-        vector<uint16_t > center;
+        int W;
+        int H;
+        vector<int> Crop_params;
+        vector<int> WCrop;
+        vector<int> HCrop;
+        int NTemp;
+        int WCross;
+        int stride;
+        float Thresh;
     };
 }
 

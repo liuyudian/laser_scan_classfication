@@ -1,7 +1,7 @@
 //
 // Created by minzhao on 18-12-18.
 //
-#include <classify.h>
+#include "classify.h"
 
 namespace ranging {
     Classify::Classify() : failed_count_(0), succeed_count_(0) {
@@ -23,7 +23,7 @@ namespace ranging {
             failed_count_++;
         else
             succeed_count_++;
-//        std::cout << "label test： " << label << std::endl;
+        //        std::cout << "label test： " << label << std::endl;
     }
 
     int Classify::init_svm() {

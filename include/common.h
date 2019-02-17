@@ -15,6 +15,11 @@ namespace ranging {
 #define RESOLUTION_CENTER_WIDTH (RESOLUTION_WIDTH / 2)
 #define RESOLUTION_CENTER_HEIGHT (RESOLUTION_HEIGHT / 2)
 
+#define ORIGINWIDTH 640
+#define ORIGINHEIGHT 360
+
+#define M_PI 3.14159265358979323846
+
     template<class T>
     struct point {
         inline point() : x(0), y(0), z(0) {}
@@ -41,9 +46,10 @@ namespace ranging {
                    std::to_string(height) + " ]";
         }
 
-        T width, height;
+        T width, height; //��Բ���س���
         T rotate;
         T rotate_slope;
+        T pixel_x, pixel_y;
         cv::Point2f points[4];
     };
 

@@ -13,11 +13,11 @@ using namespace std;
 namespace ranging {
     class Camera {
     public:
-        bool captureImg(const int extract_rate);
+        bool captureImg(string& path);
 
         void testImg();
 
-        int openCam(VideoCapture&);
+        int openCam(VideoCapture&, int index = 1);
 
         bool closeCam();
 

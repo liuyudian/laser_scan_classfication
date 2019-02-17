@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     rectangle(frame, rect_center, cv::Scalar(0, 0, 255), 3);
     calculate.calculate(cross_property.center, eclipse);
     imshow("this is you, smile! :)", frame);
-//    waitKey(0);
+    waitKey(0);
 //    classify.start_classfication(frame);
 
 //        int c = waitKey(1);

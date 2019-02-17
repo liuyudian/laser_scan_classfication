@@ -12,6 +12,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 # find opencv lib path
 find_package(OpenCV 3.4 REQUIRED)
+find_package(dlib REQUIRED)
+include(/usr/local/lib/cmake/dlib/dlib.cmake)
 # add head file
 include_directories(${OpenCV_INCLUDE_DIRS} include)
 message(${OpenCV_INCLUDE_DIRS})
@@ -24,4 +26,4 @@ include_directories( ${PROJECT_SOURCE_DIR}/include )
 add_subdirectory( src )
 
 add_executable(laser_scan_classfication main.cpp )
-target_link_libraries( laser_scan_classfication ranging)
+target_link_libraries( laser_scan_classfication ranging dlib::dlib)
